@@ -3,11 +3,8 @@ import numpy as np
 import keras.backend as K
 import matplotlib.pylab as plt
 
-def dataRescale(x):
-    return x*2/255 - 1
-
 def inverseRescale(X):
-    return ((X * 0.5 + 0.5) * 255.)
+    return (X * 255.)
 
 def saveModelWeights(generator_model, discriminator_model, e, localPath):
     
@@ -21,6 +18,19 @@ def saveModelWeights(generator_model, discriminator_model, e, localPath):
 
     disc_weights_path = os.path.join(model_path, 'disc_epoch'+ str(e) +'.h5')
     discriminator_model.save_weights(disc_weights_path, overwrite=True)
+
+def loadModelWeights(generator_model, discriminator_model, fileName, localPath):
+    
+    if(localPath.endswith('/')):
+        raise Exception('Path must not end with /')
+
+    model_path = os.getcwd() + localPath
+
+    gen_weights_path = os.path.join(model_path, fileName)
+    generator_model.save_weights(gen_weights_path)
+
+    disc_weights_path = os.path.join(model_path, fileName)
+    discriminator_model.save_weights(disc_weights_path)
 
 
 def plotGeneratedBatch(X_real, X_gen, localPath):
