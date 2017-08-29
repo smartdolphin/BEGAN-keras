@@ -7,7 +7,7 @@ from keras.utils import generic_utils
 from keras import backend as k
 
 class GANTrainer:
-	def __init__(self, gen, disc, gan, data, kLambda = .001, logEpochOutput = True, saveModelFrequency = 5, 
+	def __init__(self, gen, disc, gan, data, saveFile, kLambda = .001, logEpochOutput = True, saveModelFrequency = 5, 
                  sampleSwatch = True, saveSampleSwatch = False):
 		'''
 		Class contains all the default values for training a particular GAN
@@ -29,6 +29,7 @@ class GANTrainer:
 		self.discriminator = disc
 		self.gan = gan
 		self.dataGenerator = data
+		self.saveFile = saveFile
 		try:
 			self.dataGenerator.next()
 		except:
@@ -57,6 +58,9 @@ class GANTrainer:
 		gamma -- Hyperparameter from BEGAN paper to regulate proportion of Generator Error over Discriminator Error. Defined from 0 to 1.
 		path -- Optional parameter specifying location to save output file locations. Starts from the working directory.
 		'''
+		if self.saveFile is not None:
+			utils.loadModelWeights(self.generator, self.discriminator, self.saveFile, path)
+
 		for e in range(self.firstEpoch, self.firstEpoch + nb_epoch):
 			progbar = generic_utils.Progbar(nb_batch_per_epoch*batch_size)
 			start = time.time()
@@ -66,7 +70,8 @@ class GANTrainer:
 				zG = np.random.uniform(-1,1,(batch_size*2, self.z)) #
 				            
 				#Train D
-				real = self.dataGenerator.next()
+				reals = self.dataGenerator.next()
+				real = reals[0]
 				d_loss_real = self.discriminator.train_on_batch(real, real)
 				
 				gen = self.generator.predict(zD)
