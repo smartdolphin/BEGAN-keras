@@ -24,8 +24,8 @@ def decoder(h, img_dim, channels, n = 128):
     channels -- 1 or 3 depending on whether the images have color channels or not.
     n -- Number of convolution filters, paper value is 128
     '''
-    init_dim = 8 #Starting size from the paper
-    layers = int(np.log2(img_dim) - 3)
+    init_dim = 25 #Starting size from the paper
+    layers = int(np.log2(img_dim) - 4)
     
     mod_input = Input(shape=(h,))
     x = Dense(n*init_dim**2)(mod_input)
@@ -53,7 +53,7 @@ def encoder(h, img_dim, channels, n = 128):
     channels -- 1 or 3 depending on whether the images have color channels or not.
     n -- Number of convolution filters, paper value is 128
     '''
-    init_dim = 8
+    init_dim = 13
     layers = int(np.log2(img_dim) - 2)
     
     mod_input = Input(shape=shape(channels, img_dim, img_dim))
