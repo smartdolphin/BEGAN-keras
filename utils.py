@@ -1,6 +1,8 @@
 import os
 import numpy as np
 import keras.backend as K
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pylab as plt
 
 def inverseRescale(X):

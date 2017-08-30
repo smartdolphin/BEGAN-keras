@@ -83,10 +83,6 @@ def main(unused_argv):
 if __name__ == "__main__":
   if True:
     exec("""
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 if not os.path.exists(FLAGS.image_dir):
   os.makedirs(FLAGS.image_dir)""")
 
