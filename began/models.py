@@ -14,7 +14,7 @@ def shape(depth, row, col):
     else:
         return (row, col, depth)
 
-def decoder(h, img_dim, channels, n = 128):
+def decoder(h, img_dim, channels, n=128):
     '''
     The decoder model is used as both half of the discriminator and as the generator.
 
@@ -28,7 +28,7 @@ def decoder(h, img_dim, channels, n = 128):
     layers = int(np.log2(img_dim) - 4)
     
     mod_input = Input(shape=(h,))
-    x = Dense(n*init_dim**2)(mod_input)
+    x = Dense(n * init_dim ** 2)(mod_input)
     x = Reshape(shape(n, init_dim, init_dim))(x)
     
     x = Convolution2D(n, 3, 3, activation = 'elu', border_mode="same")(x)
@@ -43,7 +43,7 @@ def decoder(h, img_dim, channels, n = 128):
     
     return Model(mod_input,x)
 
-def encoder(h, img_dim, channels, n = 128):
+def encoder(h, img_dim, channels, n=128):
     '''
     The encoder model is the inverse of the decoder used in the autoencoder.
 
@@ -60,18 +60,18 @@ def encoder(h, img_dim, channels, n = 128):
     x = Convolution2D(channels, 3, 3, activation = 'elu', border_mode="same")(mod_input)
     
     for i in range(1, layers):
-        x = Convolution2D(i*n, 3, 3, activation = 'elu', border_mode="same")(x)
-        x = Convolution2D(i*n, 3, 3, activation = 'elu', border_mode="same", subsample=(2,2))(x)
+        x = Convolution2D(i * n, 3, 3, activation = 'elu', border_mode="same")(x)
+        x = Convolution2D(i * n, 3, 3, activation = 'elu', border_mode="same", subsample=(2,2))(x)
     
-    x = Convolution2D(layers*n, 3, 3, activation = 'elu', border_mode="same")(x)
-    x = Convolution2D(layers*n, 3, 3, activation = 'elu', border_mode="same")(x)
+    x = Convolution2D(layers * n, 3, 3, activation = 'elu', border_mode="same")(x)
+    x = Convolution2D(layers * n, 3, 3, activation = 'elu', border_mode="same")(x)
     
-    x = Reshape((layers*n*init_dim**2,))(x)
+    x = Reshape((layers * n * init_dim ** 2,))(x)
     x = Dense(h)(x)
     
     return Model(mod_input,x)
 
-def autoencoder(h, img_dim, channels, n = 128):
+def autoencoder(h, img_dim, channels, n=128):
     '''
     The autoencoder is used as the discriminator
 

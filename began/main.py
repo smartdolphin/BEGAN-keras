@@ -11,33 +11,33 @@ from tensorflow import app
 FLAGS = flags.FLAGS
 
 if __name__ == "__main__":
-  # Dataset flags.
-  flags.DEFINE_string("train_data", "./faces",
-                      "The directory to save the model files in.")
+    # Dataset flags.
+    flags.DEFINE_string("train_data", "./faces",
+                        "The directory to save the model files in.")
 
-  flags.DEFINE_string("image_dir", "./out",
-                      "The directory to save the generated image files in.")
+    flags.DEFINE_string("image_dir", "./out",
+                        "The directory to save the generated image files in.")
 
-  flags.DEFINE_string("epochs", 100,
-                      "epochs")
+    flags.DEFINE_string("epochs", 100,
+                        "epochs")
 
-  flags.DEFINE_string("batches_per_epoch", 150,
-                      "Batches per epoch")
+    flags.DEFINE_string("batches_per_epoch", 150,
+                        "Batches per epoch")
 
-  flags.DEFINE_string("batch_size", 10,
-                      "Batch size")
+    flags.DEFINE_string("batch_size", 10,
+                        "Batch size")
 
-  flags.DEFINE_string("gamma", .5,
-                      "Gamma")
+    flags.DEFINE_string("gamma", .5,
+                        "Gamma")
 
-  flags.DEFINE_string("img_size", 50,
-                      "Size of square image")
+    flags.DEFINE_string("img_size", 50,
+                        "Size of square image")
 
-  flags.DEFINE_string("channels", 1,
-                      "Channel of image")
-					  
-  flags.DEFINE_string("save_file", None,
-                      "H5 saved file name")
+    flags.DEFINE_string("channels", 1,
+                        "Channel of image")
+
+    flags.DEFINE_string("save_file", None,
+                        "H5 saved file name")
 
 def main(unused_argv):
     #Training parameters
@@ -67,7 +67,7 @@ def main(unused_argv):
     gan.compile(loss=models.l1Loss, optimizer=adam)
 
     #Load data
-    train_datagen = image.ImageDataGenerator(rescale=1./255)
+    train_datagen = image.ImageDataGenerator(rescale=1. / 255)
     train_generator = train_datagen.flow_from_directory(FLAGS.train_data,
                                                     target_size=(img_size, img_size),
                                                     batch_size=batch_size,
@@ -81,9 +81,8 @@ def main(unused_argv):
     trainer.train(epochs, batches_per_epoch, batch_size, gamma, FLAGS.image_dir)
 
 if __name__ == "__main__":
-  if True:
     exec("""
 if not os.path.exists(FLAGS.image_dir):
   os.makedirs(FLAGS.image_dir)""")
 
-  app.run()
+    app.run()

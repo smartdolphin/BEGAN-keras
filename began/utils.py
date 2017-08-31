@@ -9,20 +9,20 @@ def inverseRescale(X):
     return (X * 255.)
 
 def saveModelWeights(generator_model, discriminator_model, e, localPath):
-    
+
     if(localPath.endswith('/')):
         raise Exception('Path must not end with /')
 
     model_path = os.getcwd() + localPath
 
-    gen_weights_path = os.path.join(model_path, 'gen_epoch'+ str(e) +'.h5')
+    gen_weights_path = os.path.join(model_path, 'gen_epoch' + str(e) + '.h5')
     generator_model.save_weights(gen_weights_path, overwrite=True)
 
-    disc_weights_path = os.path.join(model_path, 'disc_epoch'+ str(e) +'.h5')
+    disc_weights_path = os.path.join(model_path, 'disc_epoch' + str(e) + '.h5')
     discriminator_model.save_weights(disc_weights_path, overwrite=True)
 
 def loadModelWeights(generator_model, discriminator_model, fileName, localPath):
-    
+
     if(localPath.endswith('/')):
         raise Exception('Path must not end with /')
 
@@ -34,7 +34,6 @@ def loadModelWeights(generator_model, discriminator_model, fileName, localPath):
     disc_weights_path = os.path.join(model_path, fileName)
     discriminator_model.save_weights(disc_weights_path)
 
-
 def plotGeneratedBatch(X_real, X_gen, localPath):
 
     if(not localPath.endswith('.png')):
@@ -45,13 +44,13 @@ def plotGeneratedBatch(X_real, X_gen, localPath):
 
     Xg = X_gen[:8]
     Xr = X_real[:8]
-        
+
     ax = 0 if K.image_dim_ordering() == "tf" else 1
-        
+
     X = np.concatenate((Xg, Xr), axis=0)
     list_rows = []
     for i in range(int(X.shape[0] / 4)):
-        Xr = np.concatenate([X[k] for k in range(4 * i, 4 * (i + 1))], axis=ax+1)
+        Xr = np.concatenate([X[k] for k in range(4 * i, 4 * (i + 1))], axis=ax + 1)
         list_rows.append(Xr)
 
     Xr = np.concatenate(list_rows, axis=ax)
