@@ -55,7 +55,7 @@ def main(unused_argv):
     h = 128 #Autoencoder hidden representation
     adam = Adam(lr=0.00005) #lr: between 0.0001 and 0.00005
     #In the paper, Adam's learning rate decays if M stalls.  This is not
-                               #implemented.
+    #implemented.
 
     #Build models
     generator = models.decoder(z, img_size, channels)
@@ -75,14 +75,14 @@ def main(unused_argv):
                                                     class_mode='categorical')
 
     trainer = train.GANTrainer(generator, discriminator, gan, train_generator,
-													FLAGS.save_file,
-													saveModelFrequency=1,
-													saveSampleSwatch=True)
+                                                    FLAGS.save_file,
+                                                    saveModelFrequency=1,
+                                                    saveSampleSwatch=True)
     trainer.train(epochs, batches_per_epoch, batch_size, gamma, FLAGS.image_dir)
 
 if __name__ == "__main__":
     exec("""
 if not os.path.exists(FLAGS.image_dir):
-  os.makedirs(FLAGS.image_dir)""")
+    os.makedirs(FLAGS.image_dir)""")
 
     app.run()
