@@ -7,8 +7,8 @@ from keras.utils import generic_utils
 from keras import backend as k
 
 class GANTrainer:
-    def __init__(self, gen, disc, gan, data, saveFile, kLambda=.001, logEpochOutput=True, saveModelFrequency=5, 
-            sampleSwatch=True, saveSampleSwatch=False):
+    def __init__(self, gen, disc, gan, data, genSaveFile, discSaveFile, kLambda=.001, logEpochOutput=True,
+                 saveModelFrequency=5, sampleSwatch=True, saveSampleSwatch=False):
         '''
         Class contains all the default values for training a particular GAN
 
@@ -29,7 +29,8 @@ class GANTrainer:
         self.discriminator = disc
         self.gan = gan
         self.dataGenerator = data
-        self.saveFile = saveFile
+        self.genSaveFile = genSaveFile
+        self.discSaveFile = discSaveFile
         try:
             self.dataGenerator.next()
         except:
@@ -57,8 +58,8 @@ class GANTrainer:
         gamma -- Hyperparameter from BEGAN paper to regulate proportion of Generator Error over Discriminator Error. Defined from 0 to 1.
         path -- Optional parameter specifying location to save output file locations. Starts from the working directory.
         '''
-        if self.saveFile is not None:
-            utils.loadModelWeights(self.generator, self.discriminator, self.saveFile, path)
+        if self.genSaveFile is not None and self.discSaveFile is not None:
+            utils.loadModelWeights(self.generator, self.discriminator, self.genSaveFile, self.discSaveFile, path)
 
         for e in range(self.firstEpoch, self.firstEpoch + nb_epoch):
             progbar = generic_utils.Progbar(nb_batch_per_epoch * batch_size)

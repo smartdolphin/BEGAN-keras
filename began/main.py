@@ -1,10 +1,10 @@
 import os
-from keras.preprocessing import image
-from keras.optimizers import Adam
 import numpy as np
 import models
 import train
 import utils
+from keras.preprocessing import image
+from keras.optimizers import Adam
 from tensorflow import flags
 from tensorflow import app
 
@@ -36,8 +36,11 @@ if __name__ == "__main__":
     flags.DEFINE_string("channels", 1,
                         "Channel of image")
 
-    flags.DEFINE_string("save_file", None,
-                        "H5 saved file name")
+    flags.DEFINE_string("gen_save_file", None,
+                        "Generator H5 saved file name")
+
+    flags.DEFINE_string("disc_save_file", None,
+                        "Discriminator H5 saved file name")
 
 def main(unused_argv):
     #Training parameters
@@ -75,7 +78,8 @@ def main(unused_argv):
                                                     class_mode='categorical')
 
     trainer = train.GANTrainer(generator, discriminator, gan, train_generator,
-                                                    FLAGS.save_file,
+                                                    FLAGS.gen_save_file,
+                                                    FLAGS.disc_save_file,
                                                     saveModelFrequency=1,
                                                     saveSampleSwatch=True)
     trainer.train(epochs, batches_per_epoch, batch_size, gamma, FLAGS.image_dir)

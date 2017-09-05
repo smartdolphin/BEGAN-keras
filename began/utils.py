@@ -10,10 +10,10 @@ def inverseRescale(X):
 
 def saveModelWeights(generator_model, discriminator_model, e, localPath):
 
-    if(localPath.endswith('/')):
-        raise Exception('Path must not end with /')
+    if localPath.endswith('/'):
+        localPath += '/'
 
-    model_path = os.getcwd() + localPath
+    model_path = os.path.join(os.getcwd(), localPath)
 
     gen_weights_path = os.path.join(model_path, 'gen_epoch' + str(e) + '.h5')
     generator_model.save_weights(gen_weights_path, overwrite=True)
@@ -21,22 +21,24 @@ def saveModelWeights(generator_model, discriminator_model, e, localPath):
     disc_weights_path = os.path.join(model_path, 'disc_epoch' + str(e) + '.h5')
     discriminator_model.save_weights(disc_weights_path, overwrite=True)
 
-def loadModelWeights(generator_model, discriminator_model, fileName, localPath):
+def loadModelWeights(generator_model, discriminator_model, genFileName, discFileName, localPath):
 
-    if(localPath.endswith('/')):
+    if genFileName is None or discFileName is None:
+        raise Exception('Save fila name must be contained')
+    if localPath.endswith('/'):
         raise Exception('Path must not end with /')
 
-    model_path = os.getcwd() + localPath
+    model_path = os.path.join(os.getcwd(), localPath)
 
-    gen_weights_path = os.path.join(model_path, fileName)
-    generator_model.save_weights(gen_weights_path)
+    gen_weights_path = os.path.join(model_path, genFileName)
+    generator_model.load_weights(gen_weights_path)
 
-    disc_weights_path = os.path.join(model_path, fileName)
-    discriminator_model.save_weights(disc_weights_path)
+    disc_weights_path = os.path.join(model_path, discFileName)
+    discriminator_model.load_weights(disc_weights_path)
 
 def plotGeneratedBatch(X_real, X_gen, localPath):
 
-    if(not localPath.endswith('.png')):
+    if not localPath.endswith('.png'):
         raise Exception('Must be .png file')
 
     X_real = inverseRescale(X_real)
@@ -54,13 +56,13 @@ def plotGeneratedBatch(X_real, X_gen, localPath):
         list_rows.append(Xr)
 
     Xr = np.concatenate(list_rows, axis=ax)
-    if(ax == 1):
+    if ax == 1:
         Xr = Xr.transpose(1,2,0)
 
     if Xr.shape[-1] == 1:
         plt.imshow(Xr[:, :, 0], cmap="gray")
     else:
         plt.imshow(Xr)
-    plt.savefig(os.getcwd() + localPath)
+    plt.savefig(os.path.join(os.getcwd(), localPath))
     plt.clf()
     plt.close()
