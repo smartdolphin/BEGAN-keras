@@ -24,6 +24,9 @@ Install the necessary requirements. Import your data into the main.py file and m
     
 
 <b>Training in Cloud</b>
+
+This command is not yet supported
+
 ```
 BUCKET_NAME=gs://{user}
 TRAIN_DATA=gs://{user}/train_data
